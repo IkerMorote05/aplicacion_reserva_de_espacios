@@ -6,13 +6,13 @@ enum EstadoReserva { confirmada, pendiente, cancelada }
 
 class Reserva {
   final String id;
-  final Espacio espacio;
-  final Usuario usuario;
+  final Espacio? espacio;
+  final Usuario? usuario;
   final String actividad;
   final DateTime inicio;
   final DateTime fin;
   final int asistentes;
-  final EstadoReserva estado;
+  final EstadoReserva? estado;
   final List<ServicioContratado> serviciosContratados;
   final int tarifaHoraCentimos;
   final int precioTotalCentimos;

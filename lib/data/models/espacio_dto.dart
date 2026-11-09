@@ -1,4 +1,5 @@
 import 'package:aplicacion_reserva_espacios/data/models/contacto_local_dto.dart';
+import 'package:aplicacion_reserva_espacios/data/models/servicio_extra_dto.dart';
 
 class EspacioDto {
   final String id;
@@ -9,6 +10,9 @@ class EspacioDto {
   final String condicionesUso;
   final int aforo;
   final String imagenAsset;
+  final List<String> imagenesAssets;
+  final String? sitioWeb;
+  final List<ServicioExtraDto> serviciosDisponibles;
   final List<String> actividades;
   final List<String> equipamiento;
   final int precioHoraCentimos;
@@ -29,5 +33,8 @@ class EspacioDto {
     required this.actividades,
     required this.equipamiento,
     required this.contacto,
+    required this.imagenesAssets,
+    this.sitioWeb,
+    required this.serviciosDisponibles,
   });
 }
