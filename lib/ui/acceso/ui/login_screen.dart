@@ -36,10 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _iniciarSesion() {
     if (!_formKey.currentState!.validate()) {
-      Navigator.of(context)
-          .push<void>(MaterialPageRoute<void>(builder: (_) => Homepantalla()));
+      return;
     }
-    ;
 
     final usuario = _usuarios.obtenerUsuario(
       _nombreController.text.trim(),
@@ -57,6 +55,9 @@ class _LoginScreenState extends State<LoginScreen> {
         SnackBar(
           content: Text('Inicio de sesión correcto. Hola, ${usuario.nombre}.'),
         ),
+      );
+      Navigator.of(context).pushReplacement<void, void>(
+        MaterialPageRoute<void>(builder: (_) => const Homepantalla()),
       );
     }
   }

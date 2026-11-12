@@ -10,8 +10,8 @@ class LoginViewmodel extends ChangeNotifier {
   final UsuariosRepository service;
   final List<Usuario> usuarios;
 
-  String _nombre = '';
-  String _correo = '';
+  final String _nombre = '';
+  final String _correo = '';
   String? _error;
   String get nombre => _nombre;
   String get correo => _correo;
@@ -37,5 +37,6 @@ class LoginViewmodel extends ChangeNotifier {
       notifyListeners();
       return null;
     }
+    return null;
   }
 }

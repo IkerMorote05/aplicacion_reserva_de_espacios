@@ -1,23 +1,54 @@
+import 'package:aplicacion_reserva_espacios/ui/acceso/ui/homePantalla.dart';
 import 'package:flutter/material.dart';
 
 class Barranavegacion extends StatelessWidget {
-  Row barra() {
+  const Barranavegacion({super.key});
+
+  Row barra(BuildContext context) {
     return Row(
       children: [
-        FilledButton.icon(
-          onPressed: () {},
-          label: Text("Buscar"),
-          icon: Icon(Icons.search),
+        Expanded(
+          child: TextButton(
+            onPressed: () {
+              Navigator.of(context).push<void>(
+                MaterialPageRoute<void>(builder: (_) => Homepantalla()),
+              );
+            },
+            child: const Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.search),
+                SizedBox(height: 4),
+                Text("Buscar"),
+              ],
+            ),
+          ),
         ),
-        FilledButton.icon(
-          onPressed: () {},
-          label: Text("Reservar"),
-          icon: Icon(Icons.add),
+        Expanded(
+          child: TextButton(
+            onPressed: () {},
+            child: const Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.add),
+                SizedBox(height: 4),
+                Text("Reservar"),
+              ],
+            ),
+          ),
         ),
-        FilledButton.icon(
-          onPressed: () {},
-          label: Text("Mis reservas"),
-          icon: Icon(Icons.calendar_month),
+        Expanded(
+          child: TextButton(
+            onPressed: () {},
+            child: const Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.calendar_month),
+                SizedBox(height: 4),
+                Text("Mis reservas"),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -25,6 +56,6 @@ class Barranavegacion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return barra();
+    return barra(context);
   }
 }
