@@ -16,5 +16,10 @@ void main() {
 
     expect(find.text('Espacios cercanos'), findsOneWidget);
     expect(find.text('Sala Ágora'), findsOneWidget);
+
+    await tester.tap(find.text('Reservar'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Elige tu sala'), findsOneWidget);
   });
 }

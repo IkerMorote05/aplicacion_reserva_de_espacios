@@ -6,9 +6,15 @@ import 'package:aplicacion_reserva_espacios/domain/models/franja_disponibilidad.
 class DisponibilidadRepository {
   DisponibilidadRepository({required DatosSimuladosService service}) {
     final datos = service.leerDisponibilidad();
-    final ids = datos.map((act) => act.espacioId).toSet();
-    if (ids.length != datos.length) {
-      throw StateError("No puede haber ids repetidos");
+    final claves = datos
+        .map(
+          (dia) =>
+              '${dia.espacioId}:${dia.fecha.year}-'
+              '${dia.fecha.month}-${dia.fecha.day}',
+        )
+        .toSet();
+    if (claves.length != datos.length) {
+      throw StateError("No puede haber días repetidos por espacio");
     }
 
     _disponibilidad = List.unmodifiable(datos.map(_aDominio));
@@ -25,6 +31,7 @@ class DisponibilidadRepository {
             (franja) => FranjaDisponibilidad(
               inicio: DateTime.parse(franja.inicioIso),
               fin: DateTime.parse(franja.finIso),
+              disponible: franja.disponible,
             ),
           )
           .toList(),
@@ -32,22 +39,18 @@ class DisponibilidadRepository {
   }
 
   List<DisponibilidadDia> obtenerSieteDias(String espacioId, DateTime desde) {
-    List<DisponibilidadDia> lista = List.empty();
-    DateTime fechaMax = desde;
-    for (int i = 0; i < _disponibilidad.length; i++) {
-      if (_disponibilidad[i].fecha.day == desde &&
-          _disponibilidad[i].espacioId == espacioId) {
-        lista.add(_disponibilidad[i]);
-        fechaMax.add(const Duration(days: 1));
-      }
-
-      if (desde.difference(fechaMax).inDays <= 7 &&
-          _disponibilidad[i].fecha.day == fechaMax &&
-          _disponibilidad[i].espacioId == espacioId) {
-        lista.add(_disponibilidad[i]);
-        fechaMax.add(const Duration(days: 1));
-      }
-    }
-    return lista;
+    final inicio = DateTime(desde.year, desde.month, desde.day);
+    final fin = inicio.add(const Duration(days: 7));
+    final dias =
+        _disponibilidad
+            .where(
+              (dia) =>
+                  dia.espacioId == espacioId &&
+                  !dia.fecha.isBefore(inicio) &&
+                  dia.fecha.isBefore(fin),
+            )
+            .toList()
+          ..sort((a, b) => a.fecha.compareTo(b.fecha));
+    return List.unmodifiable(dias);
   }
 }

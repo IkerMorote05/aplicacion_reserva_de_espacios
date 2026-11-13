@@ -88,7 +88,7 @@ class _HomePantallaState extends State<Homepantalla> {
                   ),
                   backgroundColor: WidgetStatePropertyAll(Colors.black),
                 ),
-                child: Text("Reuniones", style: TextStyle(fontSize: 12)),
+                child: Text(" Reuniones", style: TextStyle(fontSize: 12)),
               ),
               FilledButton(
                 onPressed: () {},
