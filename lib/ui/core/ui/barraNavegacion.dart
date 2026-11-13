@@ -1,4 +1,5 @@
 import 'package:aplicacion_reserva_espacios/ui/acceso/ui/homePantalla.dart';
+import 'package:aplicacion_reserva_espacios/ui/reservas/ui/mis_reservas_screen.dart';
 import 'package:aplicacion_reserva_espacios/ui/reservas/ui/nueva_reserva_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,13 @@ class Barranavegacion extends StatelessWidget {
         ),
         Expanded(
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push<void>(
+                MaterialPageRoute<void>(
+                  builder: (_) => const MisReservasScreen(),
+                ),
+              );
+            },
             child: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [

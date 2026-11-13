@@ -5,6 +5,11 @@ import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_servic
 import 'package:aplicacion_reserva_espacios/domain/models/disponibilidad_dia.dart';
 import 'package:aplicacion_reserva_espacios/domain/models/espacio.dart';
 import 'package:aplicacion_reserva_espacios/domain/models/franja_disponibilidad.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_accion_inferior.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_dia.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_franja.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/clave_disponibilidad.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/mensaje_vacio.dart';
 import 'package:flutter/material.dart';
 
 class NuevaReservaScreen extends StatefulWidget {
@@ -202,13 +207,14 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
               },
             ),
           ),
-          _pieAccion(
+          BotonAccionInferior(
             habilitado: habilitarAccion,
             texto: switch (_paso) {
               0 => 'Elegir día y hora',
               1 => 'Revisar reserva',
               _ => 'Continuar · No disponible',
             },
+            onPressed: _avanzar,
           ),
         ],
       ),
@@ -230,7 +236,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
         ),
         const SizedBox(height: 18),
         if (_espacios.isEmpty)
-          const _MensajeVacio(
+          const MensajeVacio(
             icono: Icons.meeting_room_outlined,
             mensaje: 'No hay espacios disponibles para reservar.',
           )
@@ -309,7 +315,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
 
   Widget _contenidoHorario(Espacio? espacio) {
     if (espacio == null) {
-      return const _MensajeVacio(
+      return const MensajeVacio(
         icono: Icons.meeting_room_outlined,
         mensaje: 'Elige un espacio para consultar sus horarios.',
       );
@@ -337,7 +343,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
         ),
         const SizedBox(height: 18),
         if (dias.isEmpty)
-          const _MensajeVacio(
+          const MensajeVacio(
             icono: Icons.calendar_month_outlined,
             mensaje: 'Todavía no hay fechas disponibles para este espacio.',
           )
@@ -361,7 +367,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
                 final tieneDisponibilidad = fecha.franja.any(
                   (franja) => franja.disponible,
                 );
-                return _BotonDia(
+                return BotonDia(
                   etiqueta: _fechaCorta(fecha.fecha),
                   seleccionado: seleccionado,
                   disponible: tieneDisponibilidad,
@@ -377,7 +383,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
           ),
           const SizedBox(height: 12),
           if (dia == null || dia.franja.isEmpty)
-            const _MensajeVacio(
+            const MensajeVacio(
               icono: Icons.schedule_outlined,
               mensaje: 'No hay franjas cargadas para este día.',
             )
@@ -394,16 +400,16 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
             spacing: 16,
             runSpacing: 8,
             children: [
-              _ClaveDisponibilidad(
+              ClaveDisponibilidad(
                 color: Colors.white,
                 borde: Color(0xFFE5E3E8),
                 etiqueta: 'Libre',
               ),
-              _ClaveDisponibilidad(
+              ClaveDisponibilidad(
                 color: Color(0xFFF1F0F2),
                 etiqueta: 'Ocupada',
               ),
-              _ClaveDisponibilidad(color: _morado, etiqueta: 'Seleccionada'),
+              ClaveDisponibilidad(color: _morado, etiqueta: 'Seleccionada'),
             ],
           ),
         ],
@@ -433,36 +439,12 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
     final seleccionada = identical(franja, _franjaSeleccionada);
     final etiqueta = '${_hora(franja.inicio)}–${_hora(franja.fin)}';
 
-    return SizedBox(
-      width: (MediaQuery.sizeOf(context).width - 50) / 2,
-      child: OutlinedButton(
-        onPressed: franja.disponible
-            ? () => setState(() => _franjaSeleccionada = franja)
-            : null,
-        style: OutlinedButton.styleFrom(
-          backgroundColor: seleccionada
-              ? _morado
-              : franja.disponible
-              ? _fondoSuave
-              : const Color(0xFFF1F0F2),
-          foregroundColor: seleccionada ? Colors.white : Colors.black87,
-          disabledForegroundColor: Colors.black38,
-          side: BorderSide(color: seleccionada ? _morado : Colors.transparent),
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: Column(
-          children: [
-            Text(etiqueta, style: const TextStyle(fontWeight: FontWeight.w600)),
-            if (!franja.disponible) ...[
-              const SizedBox(height: 3),
-              const Text('Ocupada', style: TextStyle(fontSize: 11)),
-            ],
-          ],
-        ),
-      ),
+    return BotonFranja(
+      ancho: (MediaQuery.sizeOf(context).width - 50) / 2,
+      etiqueta: etiqueta,
+      seleccionada: seleccionada,
+      disponible: franja.disponible,
+      onPressed: () => setState(() => _franjaSeleccionada = franja),
     );
   }
 
@@ -470,7 +452,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
     final franja = _franjaSeleccionada;
     final dia = _diaSeleccionado;
     if (espacio == null || franja == null || dia == null) {
-      return const _MensajeVacio(
+      return const MensajeVacio(
         icono: Icons.event_busy_outlined,
         mensaje: 'Selecciona un espacio y un horario disponible.',
       );
@@ -566,31 +548,6 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
       ],
     );
   }
-
-  Widget _pieAccion({required bool habilitado, required String texto}) {
-    return SafeArea(
-      top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 14),
-        child: SizedBox(
-          width: double.infinity,
-          height: 52,
-          child: FilledButton(
-            onPressed: habilitado ? _avanzar : null,
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFF202024),
-              disabledBackgroundColor: Colors.grey.shade400,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: Text(texto),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class _IndicadorPasos extends StatelessWidget {
@@ -650,91 +607,6 @@ class _PasoEtiqueta extends StatelessWidget {
         fontSize: 12,
         fontWeight: activo ? FontWeight.w700 : FontWeight.w400,
       ),
-    );
-  }
-}
-
-class _BotonDia extends StatelessWidget {
-  const _BotonDia({
-    required this.etiqueta,
-    required this.seleccionado,
-    required this.disponible,
-    required this.onPressed,
-  });
-
-  final String etiqueta;
-  final bool seleccionado;
-  final bool disponible;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 62,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          backgroundColor: seleccionado
-              ? _NuevaReservaScreenState._morado
-              : _NuevaReservaScreenState._fondoSuave,
-          foregroundColor: seleccionado ? Colors.white : Colors.black87,
-          side: BorderSide(
-            color: seleccionado
-                ? _NuevaReservaScreenState._morado
-                : Colors.transparent,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(etiqueta, style: const TextStyle(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 3),
-            Icon(
-              disponible ? Icons.circle : Icons.circle_outlined,
-              size: 7,
-              color: seleccionado
-                  ? Colors.white
-                  : _NuevaReservaScreenState._morado,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ClaveDisponibilidad extends StatelessWidget {
-  const _ClaveDisponibilidad({
-    required this.color,
-    required this.etiqueta,
-    this.borde,
-  });
-
-  final Color color;
-  final String etiqueta;
-  final Color? borde;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 12,
-          height: 12,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(3),
-            border: borde == null ? null : Border.all(color: borde!),
-          ),
-        ),
-        const SizedBox(width: 5),
-        Text(etiqueta, style: const TextStyle(fontSize: 11)),
-      ],
     );
   }
 }
@@ -807,32 +679,6 @@ class _IlustracionReserva extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _MensajeVacio extends StatelessWidget {
-  const _MensajeVacio({required this.icono, required this.mensaje});
-
-  final IconData icono;
-  final String mensaje;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: _NuevaReservaScreenState._fondoSuave,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Column(
-        children: [
-          Icon(icono, color: Colors.black45, size: 30),
-          const SizedBox(height: 8),
-          Text(mensaje, textAlign: TextAlign.center),
-        ],
       ),
     );
   }

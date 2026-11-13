@@ -6,6 +6,7 @@ import 'package:aplicacion_reserva_espacios/data/services/datos_demo.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_service.dart';
 import 'package:aplicacion_reserva_espacios/domain/models/espacio.dart';
 import 'package:aplicacion_reserva_espacios/ui/core/ui/barraNavegacion.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_seleccion.dart';
 import 'package:aplicacion_reserva_espacios/ui/espacios/ui/espacios_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -77,44 +78,32 @@ class _HomePantallaState extends State<Homepantalla> {
           SizedBox(height: 16),
           Row(
             children: [
-              FilledButton(
+              BotonSeleccion(
+                seleccionado: true,
                 onPressed: () {},
-                style: ButtonStyle(
-                  minimumSize: const WidgetStatePropertyAll<Size?>(
-                    Size(100, 45),
-                  ),
-                  maximumSize: const WidgetStatePropertyAll<Size?>(
-                    Size(105, 60),
-                  ),
-                  backgroundColor: WidgetStatePropertyAll(Colors.black),
+                ancho: 105,
+                child: Text(
+                  "Reuniones",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
                 ),
-                child: Text(" Reuniones", style: TextStyle(fontSize: 12)),
               ),
-              FilledButton(
+              BotonSeleccion(
+                seleccionado: false,
                 onPressed: () {},
-                style: ButtonStyle(
-                  minimumSize: const WidgetStatePropertyAll<Size?>(
-                    Size(80, 45),
-                  ),
-                  maximumSize: const WidgetStatePropertyAll<Size?>(
-                    Size(100, 60),
-                  ),
-                  backgroundColor: WidgetStatePropertyAll(Colors.grey),
+                ancho: 105,
+                child: Text(
+                  "Talleres",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
                 ),
-                child: Text("Talleres", style: TextStyle(fontSize: 12)),
               ),
-              FilledButton(
+              BotonSeleccion(
+                seleccionado: false,
                 onPressed: () {},
-                style: ButtonStyle(
-                  minimumSize: const WidgetStatePropertyAll<Size?>(
-                    Size(100, 45),
-                  ),
-                  maximumSize: const WidgetStatePropertyAll<Size?>(
-                    Size(130, 60),
-                  ),
-                  backgroundColor: WidgetStatePropertyAll(Colors.grey),
+                ancho: 105,
+                child: Text(
+                  "Celebraciones",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
                 ),
-                child: Text("Celebraciones", style: TextStyle(fontSize: 12)),
               ),
             ],
           ),
@@ -122,7 +111,10 @@ class _HomePantallaState extends State<Homepantalla> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Cerca de ti", style: TextStyle(fontSize: 22)),
+              Text(
+                "Cerca de ti",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
               FilledButton(
                 onPressed: () {
                   Navigator.of(context).push<void>(
@@ -143,15 +135,40 @@ class _HomePantallaState extends State<Homepantalla> {
           Center(
             child: Image.asset(
               'assets/images/salonPrueba3.png',
-              width: 300,
-              height: 300,
+              width: 150,
+              height: 150,
               fit: BoxFit.contain,
             ),
           ),
           SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text(lista[1].nombre, style: TextStyle(fontSize: 22))],
+            children: [
+              Text(
+                lista[1].nombre,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Desde ${lista[1].precioHoraCentimos / 100}€",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Text(
+            "${lista[1].ubicacion} · Precio por Franja",
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+          SizedBox(height: 10),
+          Card(
+            child: ListTile(
+              leading: Icon(Icons.business_center, color: Colors.purple),
+              title: Text("${lista[5].nombre}"),
+              subtitle: Text(
+                "${lista[5].ubicacion} · desde ${lista[5].precioHoraCentimos / 100}€/ franja",
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ),
           ),
         ],
       ),

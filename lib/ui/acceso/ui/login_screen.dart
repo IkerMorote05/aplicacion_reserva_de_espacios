@@ -3,6 +3,7 @@ import 'package:aplicacion_reserva_espacios/data/services/datos_demo.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_service.dart';
 import 'package:aplicacion_reserva_espacios/ui/acceso/ui/homePantalla.dart';
 import 'package:aplicacion_reserva_espacios/ui/acceso/ui/registro_screen.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_accion_inferior.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     final usuario = _usuarios.obtenerUsuario(
-      _nombreController.text.trim(),
+      _nombreController.text,
       _correoController.text.trim(),
     );
 
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
       Navigator.of(context).pushReplacement<void, void>(
-        MaterialPageRoute<void>(builder: (_) => const Homepantalla()),
+        MaterialPageRoute<void>(builder: (context) => const Homepantalla()),
       );
     }
   }
@@ -172,13 +173,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
-                    height: 50,
-                    child: FilledButton(
+
+                    child: BotonAccionInferior(
+                      habilitado: true,
+                      texto: "Iniciar Sesión",
                       onPressed: _iniciarSesion,
-                      style: const ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.black),
-                      ),
-                      child: const Text('Iniciar sesión'),
                     ),
                   ),
                   const SizedBox(height: 22),
@@ -188,9 +187,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 25,
                         child: FilledButton(
                           onPressed: () {
-                            Navigator.of(context).push<void>(
+                            Navigator.of(context).pushReplacement<void, void>(
                               MaterialPageRoute<void>(
-                                builder: (_) => RegistroScreen(),
+                                builder: (context) => RegistroScreen(),
                               ),
                             );
                           },
@@ -207,9 +206,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 25,
                         child: FilledButton(
                           onPressed: () {
-                            Navigator.of(context).push<void>(
+                            Navigator.of(context).pushReplacement<void, void>(
                               MaterialPageRoute<void>(
-                                builder: (_) => Homepantalla(),
+                                builder: (context) => Homepantalla(),
                               ),
                             );
                           },
