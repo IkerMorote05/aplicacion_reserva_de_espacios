@@ -4,20 +4,21 @@ import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_servic
 import 'package:aplicacion_reserva_espacios/ui/acceso/ui/homePantalla.dart';
 import 'package:flutter/material.dart';
 
-bool _ocultarTexto = true;
-bool _terminos = false;
+import '../view_models/registro_viewmodel.dart';
 
 class RegistroScreen extends StatefulWidget {
   const RegistroScreen({super.key});
+
   @override
   State<RegistroScreen> createState() => _RegistroScreenState();
 }
 
 class _RegistroScreenState extends State<RegistroScreen> {
-  final _fromKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _nombreController = TextEditingController();
   final _correoController = TextEditingController();
-  String? _error;
+  final _contrasenaController = TextEditingController();
+  final _confirmarContrasenaController = TextEditingController();
 
   late final _service = DatosSimuladosService(
     espacios: espaciosDemo,
@@ -26,178 +27,183 @@ class _RegistroScreenState extends State<RegistroScreen> {
     comentarios: comentariosDemo,
     disponibilidad: disponibilidadDemo,
   );
-  late final _usuarios = UsuariosRepository(service: _service);
-  void _limpiarError() {
-    if (_error != null) {
-      setState(() => _error = null);
+  late final _viewModel = RegistroViewmodel(
+    usuariosRepository: UsuariosRepository(service: _service),
+  );
+
+  @override
+  void dispose() {
+    _nombreController.dispose();
+    _correoController.dispose();
+    _contrasenaController.dispose();
+    _confirmarContrasenaController.dispose();
+    _viewModel.dispose();
+    super.dispose();
+  }
+
+  void _registrar() {
+    if (!_formKey.currentState!.validate()) {
+      return;
     }
+
+    final usuario = _viewModel.registrar(
+      nombre: _nombreController.text,
+      correo: _correoController.text,
+      contrasena: _contrasenaController.text,
+      confirmarContrasena: _confirmarContrasenaController.text,
+    );
+    if (usuario == null) {
+      return;
+    }
+
+    Navigator.of(context).pushReplacement<void, void>(
+      MaterialPageRoute<void>(builder: (_) => Homepantalla(usuario: usuario)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Pantalla de registro")),
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Form(
-              key: _fromKey,
-              child: ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  Text(
-                    "Crea tu cuenta",
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: Colors.black,
-                      fontFamily: "TimesNewRowan",
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "Tu próximo encuentro empieza aqui, Reúnete, crea y celebra",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    controller: _nombreController,
-                    decoration: const InputDecoration(
-                      labelText: "Nombre completo",
-                      hintText: "Esteban Gutierrez",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: false,
-                      border: OutlineInputBorder(),
-                    ),
-                    textCapitalization: TextCapitalization.words,
-                    validator: (valor) {
-                      if (valor == null || valor.trim().isEmpty) {
-                        return "El nombre es obligatorio";
-                      }
-                      if (valor.trim().length < 2) {
-                        return 'Introduce al menos dos caracteres.';
-                      }
-                      return null;
-                    },
-                    onChanged: (_) => _limpiarError(),
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _correoController,
-                    decoration: const InputDecoration(
-                      labelText: "Correo electrónico",
-                      hintText: "esteban@gutierrez.com",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: false,
-                      border: OutlineInputBorder(),
-                    ),
-                    textCapitalization: TextCapitalization.words,
-                    validator: (valor) {
-                      final correo = (valor ?? '').trim();
-                      if (correo.isEmpty) {
-                        return 'El correo es obligatorio.';
-                      }
-                      if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
-                          .hasMatch(correo)) {
-                        return 'Introduce un correo con formato nombre@dominio.ext.';
-                      }
-                      return null;
-                    },
-                    onChanged: (_) => _limpiarError(),
-                  ),
-                  if (_error != null) ...[
-                    const SizedBox(height: 16),
+    return AnimatedBuilder(
+      animation: _viewModel,
+      builder: (context, _) => Scaffold(
+        appBar: AppBar(title: const Text("Pantalla de registro")),
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Form(
+                key: _formKey,
+                child: ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: [
                     Text(
-                      _error!,
+                      "Crea tu cuenta",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
+                        fontSize: 32,
+                        color: Colors.black,
+                        fontFamily: "TimesNewRowan",
+                        fontWeight: FontWeight.bold,
                       ),
-                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      "Tu próximo encuentro empieza aqui, Reúnete, crea y celebra",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: _nombreController,
+                      decoration: const InputDecoration(
+                        labelText: "Nombre completo",
+                        hintText: "Esteban Gutierrez",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: false,
+                        border: OutlineInputBorder(),
+                      ),
+                      textCapitalization: TextCapitalization.words,
+                      validator: _viewModel.validarNombre,
+                      onChanged: (_) => _viewModel.limpiarError(),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _correoController,
+                      decoration: const InputDecoration(
+                        labelText: "Correo electrónico",
+                        hintText: "esteban@gutierrez.com",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: false,
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: _viewModel.validarCorreo,
+                      onChanged: (_) => _viewModel.limpiarError(),
+                    ),
+                    if (_viewModel.error != null) ...[
+                      const SizedBox(height: 16),
+                      Text(
+                        _viewModel.error!,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: _contrasenaController,
+                      obscureText: _viewModel.ocultarContrasena,
+                      decoration: InputDecoration(
+                        labelText: "Contraseña",
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _viewModel.ocultarContrasena
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          tooltip: 'Mostrar u ocultar contraseña',
+                          onPressed: _viewModel.alternarVisibilidadContrasena,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: false,
+                        border: const OutlineInputBorder(),
+                      ),
+                      validator: _viewModel.validarContrasena,
+                      onChanged: (_) => _viewModel.limpiarError(),
+                    ),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: _confirmarContrasenaController,
+                      obscureText: _viewModel.ocultarContrasena,
+                      decoration: InputDecoration(
+                        labelText: "Confirmar contraseña",
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _viewModel.ocultarContrasena
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          tooltip: 'Mostrar u ocultar contraseña',
+                          onPressed: _viewModel.alternarVisibilidadContrasena,
+                        ),
+                        helperText: "Usa al menos 8 caracteres.",
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        filled: false,
+                        border: const OutlineInputBorder(),
+                      ),
+                      validator: (valor) => _viewModel.validarConfirmacion(
+                        valor,
+                        _contrasenaController.text,
+                      ),
+                      onChanged: (_) => _viewModel.limpiarError(),
+                    ),
+                    SizedBox(height: 20),
+                    CheckboxListTile(
+                      title: Text(
+                        'Aceptar términos y condiciones',
+                        style: TextStyle(fontSize: 12),
+                      ),
+
+                      value: _viewModel.aceptaTerminos,
+                      onChanged: _viewModel.cambiarAceptacionTerminos,
+                      controlAffinity: ListTileControlAffinity
+                          .leading, // checkbox a la izquierda
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: FilledButton(
+                        onPressed: _registrar,
+                        style: const ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(Colors.black),
+                        ),
+                        child: Text("Crear cuenta · Demo"),
+                      ),
                     ),
                   ],
-                  SizedBox(height: 10),
-                  TextField(
-                    obscureText: _ocultarTexto,
-                    decoration: InputDecoration(
-                      labelText: "Contraseña",
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _ocultarTexto
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _ocultarTexto = !_ocultarTexto;
-                          });
-                        },
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: false,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    obscureText: _ocultarTexto,
-                    decoration: InputDecoration(
-                      labelText: "Confirmar contraseña",
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _ocultarTexto
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _ocultarTexto = !_ocultarTexto;
-                          });
-                        },
-                      ),
-                      helperText: "Usa almenos 8 caracteres.",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      filled: false,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  CheckboxListTile(
-                    title: Text(
-                      'Aceptar términos y condiciones',
-                      style: TextStyle(fontSize: 12),
-                    ),
-
-                    value: _terminos,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _terminos = value ?? false;
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity
-                        .leading, // checkbox a la izquierda
-                  ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 60,
-                    child: FilledButton(
-                      onPressed: () {
-                        Navigator.of(context).push<void>(
-                          MaterialPageRoute<void>(
-                            builder: (_) => Homepantalla(),
-                          ),
-                        );
-                      },
-                      style: const ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.black),
-                      ),
-                      child: Text("Crear cuenta · Demo"),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

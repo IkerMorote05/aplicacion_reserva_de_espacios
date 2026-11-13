@@ -8,6 +8,7 @@ import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_servic
 import 'package:aplicacion_reserva_espacios/domain/models/espacio.dart';
 import 'package:aplicacion_reserva_espacios/domain/models/reserva.dart';
 import 'package:aplicacion_reserva_espacios/ui/core/ui/barraNavegacion.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_seleccion.dart';
 import 'package:aplicacion_reserva_espacios/ui/core/ui/reserva_tarjeta.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,6 @@ class MisReservasScreen extends StatefulWidget {
 }
 
 class _MisReservasScreemState extends State<MisReservasScreen> {
-  late final List<Reserva> lista = _reservas.obtenerTodos();
   late final _service = DatosSimuladosService(
     espacios: espaciosDemo,
     reservas: reservasDemo,
@@ -33,7 +33,7 @@ class _MisReservasScreemState extends State<MisReservasScreen> {
     ur: _usuario,
     er: _espacios,
   );
-
+  late final List<Reserva> lista = _reservas.obtenerTodos();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,37 +50,23 @@ class _MisReservasScreemState extends State<MisReservasScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FilledButton(
+              BotonSeleccion(
+                seleccionado: true,
                 onPressed: () {},
-                style: ButtonStyle(
-                  maximumSize: WidgetStatePropertyAll(Size(500, 48)),
-                  minimumSize: WidgetStatePropertyAll(Size(160, 48)),
-                ),
+                ancho: 150,
                 child: Text("Próximas · ${lista.length}"),
               ),
               SizedBox(width: 16),
-              FilledButton(
+              BotonSeleccion(
+                seleccionado: false,
                 onPressed: () {},
-                style: const ButtonStyle(
-                  maximumSize: WidgetStatePropertyAll(Size(500, 48)),
-                  minimumSize: WidgetStatePropertyAll(Size(160, 48)),
-                  backgroundColor: WidgetStatePropertyAll(
-                    Color.fromARGB(255, 216, 216, 216),
-                  ),
-                  shadowColor: WidgetStatePropertyAll(Colors.black),
-                ),
-                child: Text("Historial", style: TextStyle(color: Colors.black)),
+                ancho: 150,
+                child: Text("Historial"),
               ),
             ],
           ),
           SizedBox(height: 10),
-          ListView.builder(
-            itemCount: lista.length,
-            itemBuilder: (context, index) {
-              final reserva = lista[index];
-              return ReservaTarjeta(id: reserva.id);
-            },
-          ),
+          ...lista.map((reserva) => ReservaTarjeta(id: reserva.id)),
         ],
       ),
     );

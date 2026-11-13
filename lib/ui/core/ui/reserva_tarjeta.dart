@@ -28,14 +28,15 @@ class _ReservaTarjetaState extends State<ReservaTarjeta> {
     ur: _usuarios,
     er: _espacios,
   );
+
   late final _espacios = EspaciosRepository(service: _service);
   late final _usuarios = UsuariosRepository(service: _service);
   @override
   Widget build(BuildContext context) {
     final Reserva? reserva = _reservas.obtenerPorId(widget.id);
-    final String color = reserva?.estado != EstadoReserva.confirmada
-        ? "red"
-        : "green";
+    String _hora(DateTime fecha) =>
+        '${fecha.hour.toString().padLeft(2, '0')}:${fecha.minute.toString().padLeft(2, '0')}';
+
     if (reserva == null) {
       return const Card(
         child: ListTile(title: Text("No se encontró la reserva")),
@@ -65,8 +66,10 @@ class _ReservaTarjetaState extends State<ReservaTarjeta> {
             Text(reserva.espacio?.ubicacion ?? 'Sin ubicacion'),
             SizedBox(height: 5),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("${reserva.inicio}-${reserva.fin}"),
+                Text("${_hora(reserva.inicio)}-${_hora(reserva.fin)}"),
+
                 Text("${reserva.precioTotalCentimos / 100}€"),
               ],
             ),

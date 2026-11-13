@@ -4,14 +4,6 @@ import 'package:flutter/material.dart';
 import 'data/services/datos_demo.dart';
 import 'data/services/datos_simulados_service.dart';
 
-final service = DatosSimuladosService(
-  espacios: espaciosDemo,
-  reservas: reservasDemo,
-  usuarios: usuariosDemo,
-  comentarios: comentariosDemo,
-  disponibilidad: disponibilidadDemo,
-);
-
 void main() {
   runApp(const MyApp());
 }
