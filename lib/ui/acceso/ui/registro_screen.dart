@@ -1,3 +1,4 @@
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/usuarios_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_demo.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_service.dart';
@@ -79,15 +80,15 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       "Crea tu cuenta",
                       style: TextStyle(
                         fontSize: 32,
-                        color: Colors.black,
-                        fontFamily: "TimesNewRowan",
+                        color: TemaApp.tinta,
+                        fontFamily: "Montserrat",
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 12),
                     Text(
                       "Tu próximo encuentro empieza aqui, Reúnete, crea y celebra",
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: TemaApp.textoSecundario),
                     ),
                     SizedBox(height: 10),
                     TextFormField(
@@ -194,7 +195,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       child: FilledButton(
                         onPressed: _registrar,
                         style: const ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(Colors.black),
+                          backgroundColor: WidgetStatePropertyAll(
+                            TemaApp.tinta,
+                          ),
                         ),
                         child: Text("Crear cuenta · Demo"),
                       ),

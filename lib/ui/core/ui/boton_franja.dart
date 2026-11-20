@@ -1,3 +1,4 @@
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:flutter/material.dart';
 
 class BotonFranja extends StatelessWidget {
@@ -16,8 +17,8 @@ class BotonFranja extends StatelessWidget {
   final bool disponible;
   final VoidCallback onPressed;
 
-  static const _morado = Color(0xFF6847C7);
-  static const _fondoSuave = Color(0xFFF6F5F8);
+  static const _morado = TemaApp.acento;
+  static const _fondoSuave = TemaApp.superficieAtenuada;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +32,8 @@ class BotonFranja extends StatelessWidget {
               : disponible
               ? _fondoSuave
               : const Color(0xFFF1F0F2),
-          foregroundColor: seleccionada ? Colors.white : Colors.black87,
-          disabledForegroundColor: Colors.black38,
+          foregroundColor: seleccionada ? TemaApp.superficie : TemaApp.tinta,
+          disabledForegroundColor: TemaApp.textoSecundario,
           side: BorderSide(color: seleccionada ? _morado : Colors.transparent),
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
           shape: RoundedRectangleBorder(

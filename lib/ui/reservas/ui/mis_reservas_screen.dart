@@ -1,11 +1,9 @@
-import 'dart:ui';
-
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/espacios_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/reservas_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/usuarios_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_demo.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_service.dart';
-import 'package:aplicacion_reserva_espacios/domain/models/espacio.dart';
 import 'package:aplicacion_reserva_espacios/domain/models/reserva.dart';
 import 'package:aplicacion_reserva_espacios/ui/core/ui/barraNavegacion.dart';
 import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_seleccion.dart';
@@ -44,7 +42,7 @@ class _MisReservasScreemState extends State<MisReservasScreen> {
         children: [
           Text(
             "Tus próximos encuentros, en un solo lugar.",
-            style: TextStyle(color: Colors.grey, fontSize: 14),
+            style: TextStyle(color: TemaApp.textoSecundario, fontSize: 14),
           ),
           SizedBox(height: 10),
           Row(

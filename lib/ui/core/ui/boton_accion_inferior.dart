@@ -1,3 +1,4 @@
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:flutter/material.dart';
 
 class BotonAccionInferior extends StatelessWidget {
@@ -24,9 +25,9 @@ class BotonAccionInferior extends StatelessWidget {
           child: FilledButton(
             onPressed: habilitado ? onPressed : null,
             style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFF202024),
-              disabledBackgroundColor: Colors.grey.shade400,
-              foregroundColor: Colors.white,
+              backgroundColor: TemaApp.tinta,
+              disabledBackgroundColor: TemaApp.textoSecundario,
+              foregroundColor: TemaApp.superficie,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

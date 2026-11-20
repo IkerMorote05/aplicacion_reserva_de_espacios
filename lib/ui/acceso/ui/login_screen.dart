@@ -1,8 +1,10 @@
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/usuarios_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_demo.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_service.dart';
 import 'package:aplicacion_reserva_espacios/ui/acceso/ui/homePantalla.dart';
 import 'package:aplicacion_reserva_espacios/ui/acceso/ui/registro_screen.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_accion.dart';
 import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_accion_inferior.dart';
 import 'package:flutter/material.dart';
 
@@ -76,10 +78,11 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Login Reserva · Inicio',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          'Inicio de sesión',
+          style: TextStyle(fontWeight: FontWeight.bold, color: TemaApp.tinta),
+          textAlign: TextAlign.center,
         ),
-        backgroundColor: Colors.indigo,
+        backgroundColor: TemaApp.fondo,
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -106,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     "Tu espacio. \nTu momento.",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: TemaApp.tinta,
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                     ),
@@ -114,7 +117,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 10),
                   Text(
                     "Encuentra tu lugar para disfrutar",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: TemaApp.textoSecundario,
+                    ),
                   ),
                   SizedBox(height: 16),
                   TextFormField(
@@ -184,43 +190,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 22),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 25,
-                        child: FilledButton(
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement<void, void>(
-                              MaterialPageRoute<void>(
-                                builder: (context) => RegistroScreen(),
-                              ),
-                            );
-                          },
-                          style: const ButtonStyle(
-                            backgroundColor: WidgetStatePropertyAll(
-                              Colors.black,
+                      BotonAccion(
+                        icono: Icon(Icons.person_add),
+                        habilitado: true,
+                        texto: "Crear cuenta",
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement<void, void>(
+                            MaterialPageRoute<void>(
+                              builder: (context) => RegistroScreen(),
                             ),
-                          ),
-                          child: const Text("Crear cuenta"),
-                        ),
+                          );
+                        },
                       ),
-                      SizedBox(width: 40),
-                      SizedBox(
-                        height: 25,
-                        child: FilledButton(
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement<void, void>(
-                              MaterialPageRoute<void>(
-                                builder: (context) => Homepantalla(),
-                              ),
-                            );
-                          },
-                          style: const ButtonStyle(
-                            backgroundColor: WidgetStatePropertyAll(
-                              Colors.black,
+                      BotonAccion(
+                        icono: Icon(Icons.person_outline),
+                        habilitado: true,
+                        texto: "Inicio sin cuenta",
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement<void, void>(
+                            MaterialPageRoute<void>(
+                              builder: (context) => Homepantalla(),
                             ),
-                          ),
-                          child: const Text("Entrar sin cuenta"),
-                        ),
+                          );
+                        },
                       ),
                     ],
                   ),

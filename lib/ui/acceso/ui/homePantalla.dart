@@ -1,3 +1,4 @@
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/espacios_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_demo.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_service.dart';
@@ -67,8 +68,8 @@ class _HomePantallaState extends State<Homepantalla> {
                   ),
                   CircleAvatar(
                     radius: 20,
-                    backgroundColor: Colors.indigo,
-                    foregroundColor: Colors.white,
+                    backgroundColor: TemaApp.acento,
+                    foregroundColor: TemaApp.superficie,
                     child: Text(_inicialesUsuario),
                   ),
                 ],
@@ -240,7 +241,10 @@ class _HomePantallaState extends State<Homepantalla> {
                   "Hasta ${espacio.aforo} personas",
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: TemaApp.textoSecundario,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Wrap(

@@ -73,13 +73,11 @@ class _EspacioTargetaState extends State<EspacioTargeta> {
                   onPressed: () {
                     Navigator.of(context).push<void>(
                       MaterialPageRoute<void>(
-                        builder: (_) => EspacioDetalleScreen(),
+                        builder: (_) => EspacioDetalleScreen(espacio),
                       ),
                     );
                   },
-                  child: Text(
-                    "Desde ${espacio.precioHoraCentimos / 100}€ franja ",
-                  ),
+                  child: Text("Ver Detalles ->"),
                 ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:flutter/material.dart';
 
 class MensajeVacio extends StatelessWidget {
@@ -6,7 +7,7 @@ class MensajeVacio extends StatelessWidget {
   final IconData icono;
   final String mensaje;
 
-  static const _fondoSuave = Color(0xFFF6F5F8);
+  static const _fondoSuave = TemaApp.superficieAtenuada;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class MensajeVacio extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(icono, color: Colors.black45, size: 30),
+          Icon(icono, color: TemaApp.textoSecundario, size: 30),
           const SizedBox(height: 8),
           Text(mensaje, textAlign: TextAlign.center),
         ],

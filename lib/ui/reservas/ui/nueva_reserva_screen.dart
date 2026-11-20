@@ -1,3 +1,4 @@
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/disponibilidad_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/espacios_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_demo.dart';
@@ -20,8 +21,8 @@ class NuevaReservaScreen extends StatefulWidget {
 }
 
 class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
-  static const _morado = Color(0xFF6847C7);
-  static const _fondoSuave = Color(0xFFF6F5F8);
+  static const _morado = TemaApp.acento;
+  static const _fondoSuave = TemaApp.superficieAtenuada;
 
   late final _service = DatosSimuladosService(
     espacios: espaciosDemo,
@@ -176,10 +177,10 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
     };
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: TemaApp.fondo,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+        backgroundColor: TemaApp.fondo,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           tooltip: 'Volver',
           onPressed: _volver,
@@ -232,7 +233,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
         const SizedBox(height: 8),
         const Text(
           'Selecciona el espacio que mejor encaja con tu plan.',
-          style: TextStyle(color: Colors.black54),
+          style: TextStyle(color: TemaApp.textoSecundario),
         ),
         const SizedBox(height: 18),
         if (_espacios.isEmpty)
@@ -271,7 +272,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
                 seleccionado
                     ? Icons.radio_button_checked
                     : Icons.radio_button_off,
-                color: seleccionado ? _morado : Colors.black45,
+                color: seleccionado ? _morado : TemaApp.textoSecundario,
                 size: 22,
               ),
               const SizedBox(width: 12),
@@ -292,7 +293,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
                       '${espacio.actividades.join(' · ')}',
                       style: const TextStyle(
                         fontSize: 12,
-                        color: Colors.black54,
+                        color: TemaApp.textoSecundario,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -334,7 +335,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
         const SizedBox(height: 4),
         Text(
           '${_precio(espacio.precioHoraCentimos)} por hora',
-          style: const TextStyle(color: Colors.black54, fontSize: 13),
+          style: const TextStyle(color: TemaApp.textoSecundario, fontSize: 13),
         ),
         const SizedBox(height: 20),
         const Text(
@@ -466,7 +467,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
       children: [
         Text(
           'Paso 3 de 3 · Resumen de demostración',
-          style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+          style: TextStyle(color: TemaApp.textoSecundario, fontSize: 12),
         ),
         const SizedBox(height: 14),
         const _IlustracionReserva(),
@@ -481,7 +482,10 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 8),
-        Text(_fechaLarga(dia), style: const TextStyle(color: Colors.black54)),
+        Text(
+          _fechaLarga(dia),
+          style: const TextStyle(color: TemaApp.textoSecundario),
+        ),
         const SizedBox(height: 12),
         Text(
           '${_hora(franja.inicio)}–${_hora(franja.fin)} · $horas '
@@ -491,7 +495,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
         const SizedBox(height: 7),
         Text(
           'Hasta ${espacio.aforo} personas · ${espacio.actividades.join(' · ')}',
-          style: const TextStyle(color: Colors.black54, fontSize: 13),
+          style: const TextStyle(color: TemaApp.textoSecundario, fontSize: 13),
         ),
         const SizedBox(height: 22),
         _filaPrecio(
@@ -518,7 +522,7 @@ class _NuevaReservaScreenState extends State<NuevaReservaScreen> {
               SizedBox(height: 5),
               Text(
                 'No se creará una reserva ni se realizará ningún cobro.',
-                style: TextStyle(color: Colors.black54, fontSize: 12),
+                style: TextStyle(color: TemaApp.textoSecundario, fontSize: 12),
               ),
             ],
           ),
@@ -569,7 +573,7 @@ class _IndicadorPasos extends StatelessWidget {
                   height: 1,
                   color: i <= pasoActual
                       ? _NuevaReservaScreenState._morado
-                      : Colors.black12,
+                      : TemaApp.borde,
                 ),
               ),
             _PasoEtiqueta(
@@ -599,7 +603,7 @@ class _PasoEtiqueta extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = activo || completado
         ? _NuevaReservaScreenState._morado
-        : Colors.black38;
+        : TemaApp.textoSecundario;
     return Text(
       etiqueta,
       style: TextStyle(

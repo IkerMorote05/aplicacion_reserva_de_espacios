@@ -1,3 +1,4 @@
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/espacios_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/reservas_repository.dart';
 import 'package:aplicacion_reserva_espacios/data/repositories/usuarios_repository.dart';
@@ -34,7 +35,7 @@ class _ReservaTarjetaState extends State<ReservaTarjeta> {
   @override
   Widget build(BuildContext context) {
     final Reserva? reserva = _reservas.obtenerPorId(widget.id);
-    String _hora(DateTime fecha) =>
+    String hora(DateTime fecha) =>
         '${fecha.hour.toString().padLeft(2, '0')}:${fecha.minute.toString().padLeft(2, '0')}';
 
     if (reserva == null) {
@@ -52,7 +53,7 @@ class _ReservaTarjetaState extends State<ReservaTarjeta> {
             Text(
               "${reserva.estado} · DEMO",
               style: TextStyle(
-                color: Colors.green,
+                color: TemaApp.exito,
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
@@ -68,7 +69,7 @@ class _ReservaTarjetaState extends State<ReservaTarjeta> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("${_hora(reserva.inicio)}-${_hora(reserva.fin)}"),
+                Text("${hora(reserva.inicio)}-${hora(reserva.fin)}"),
 
                 Text("${reserva.precioTotalCentimos / 100}€"),
               ],
@@ -77,11 +78,11 @@ class _ReservaTarjetaState extends State<ReservaTarjeta> {
             FilledButton(
               onPressed: () {},
               style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(Colors.white),
+                backgroundColor: WidgetStatePropertyAll(TemaApp.superficie),
               ),
               child: Text(
                 "Ver detalle ->",
-                style: TextStyle(fontSize: 12, color: Colors.purple),
+                style: TextStyle(fontSize: 12, color: TemaApp.acento),
               ),
             ),
           ],

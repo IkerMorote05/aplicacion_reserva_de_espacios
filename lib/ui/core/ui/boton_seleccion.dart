@@ -1,3 +1,4 @@
+import 'package:aplicacion_reserva_espacios/config/tema_app.dart';
 import 'package:flutter/material.dart';
 
 class BotonSeleccion extends StatelessWidget {
@@ -14,8 +15,8 @@ class BotonSeleccion extends StatelessWidget {
   final Widget child;
   final double? ancho;
 
-  static const colorSeleccionado = Color(0xFF6847C7);
-  static const colorNoSeleccionado = Color(0xFFF6F5F8);
+  static const colorSeleccionado = TemaApp.acento;
+  static const colorNoSeleccionado = TemaApp.superficieAtenuada;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class BotonSeleccion extends StatelessWidget {
           backgroundColor: seleccionado
               ? colorSeleccionado
               : colorNoSeleccionado,
-          foregroundColor: seleccionado ? Colors.white : Colors.black87,
+          foregroundColor: seleccionado ? TemaApp.superficie : TemaApp.tinta,
           side: BorderSide(
             color: seleccionado ? colorSeleccionado : Colors.transparent,
           ),
