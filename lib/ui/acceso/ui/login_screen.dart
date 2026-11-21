@@ -6,6 +6,12 @@ import 'package:aplicacion_reserva_espacios/ui/acceso/ui/homePantalla.dart';
 import 'package:aplicacion_reserva_espacios/ui/acceso/ui/registro_screen.dart';
 import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_accion.dart';
 import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_accion_inferior.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_decorado_runico.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_responsive_runico.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_runico_principal.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_secundario_runico.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/campo_input_runico.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/titulo_login_runico.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -100,19 +106,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Center(
                     child: Image.asset(
-                      'assets/images/loginImagen.webp',
-                      width: 200,
+                      'assets/images/logo2.jpeg',
+                      width: 300,
                       height: imageHeight,
                       fit: BoxFit.contain,
                     ),
                   ),
-                  Text(
-                    "Tu espacio. \nTu momento.",
-                    style: TextStyle(
-                      color: TemaApp.tinta,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  TituloLoginRunico(
+                    titulo: "El mismisimo valhalla te espera",
+                    subtitulo: "Tu seleccion de lugares te espera",
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -123,98 +125,114 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  TextFormField(
-                    controller: _nombreController,
-                    decoration: const InputDecoration(
-                      labelText: 'Nombre',
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      prefixIcon: Icon(Icons.person_outline),
-                      filled: true,
-                      border: OutlineInputBorder(),
-                    ),
-                    textCapitalization: TextCapitalization.words,
-                    validator: (valor) {
-                      if (valor == null || valor.trim().isEmpty) {
-                        return 'El nombre es obligatorio.';
-                      }
-                      if (valor.trim().length < 2) {
-                        return 'Introduce al menos dos caracteres.';
-                      }
-                      return null;
-                    },
-                    onChanged: (_) => _limpiarError(),
+                  CampoInputRunico(
+                    etiqueta: 'Correo o usuario',
+                    pista: 'nombre@dominio.com',
+                    icono: Icons.person_outline,
+                    teclado: TextInputType.emailAddress,
                   ),
+                  // TextFormField(
+                  //   controller: _nombreController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: 'Nombre',
+                  //     floatingLabelBehavior: FloatingLabelBehavior.always,
+                  //     prefixIcon: Icon(Icons.person_outline),
+                  //     filled: true,
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  //   textCapitalization: TextCapitalization.words,
+                  //   validator: (valor) {
+                  //     if (valor == null || valor.trim().isEmpty) {
+                  //       return 'El nombre es obligatorio.';
+                  //     }
+                  //     if (valor.trim().length < 2) {
+                  //       return 'Introduce al menos dos caracteres.';
+                  //     }
+                  //     return null;
+                  //   },
+                  //   onChanged: (_) => _limpiarError(),
+                  // ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _correoController,
-                    decoration: const InputDecoration(
-                      labelText: 'Correo',
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      prefixIcon: Icon(Icons.email_outlined),
-                      filled: true,
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (valor) {
-                      final correo = (valor ?? '').trim();
-                      if (correo.isEmpty) {
-                        return 'El correo es obligatorio.';
-                      }
-                      if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
-                          .hasMatch(correo)) {
-                        return 'Introduce un correo con formato nombre@dominio.ext.';
-                      }
-                      return null;
-                    },
-                    onChanged: (_) => _limpiarError(),
+                  // TextFormField(
+                  //   controller: _correoController,
+                  //   decoration: const InputDecoration(
+                  //     labelText: 'Correo',
+                  //     floatingLabelBehavior: FloatingLabelBehavior.always,
+                  //     prefixIcon: Icon(Icons.email_outlined),
+                  //     filled: true,
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  //   keyboardType: TextInputType.emailAddress,
+                  //   validator: (valor) {
+                  //     final correo = (valor ?? '').trim();
+                  //     if (correo.isEmpty) {
+                  //       return 'El correo es obligatorio.';
+                  //     }
+                  //     if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
+                  //         .hasMatch(correo)) {
+                  //       return 'Introduce un correo con formato nombre@dominio.ext.';
+                  //     }
+                  //     return null;
+                  //   },
+                  //   onChanged: (_) => _limpiarError(),
+                  // ),
+                  // if (_error != null) ...[
+                  //   const SizedBox(height: 16),
+                  //   Text(
+                  //     _error!,
+                  //     style: TextStyle(
+                  //       color: Theme.of(context).colorScheme.error,
+                  //     ),
+                  //     textAlign: TextAlign.center,
+                  //   ),
+                  // ],
+                  CampoInputRunico(
+                    etiqueta: 'Contraseña',
+                    pista: '••••••••',
+                    icono: Icons.lock_outline,
+                    obscureText: true,
+                    colorAcento: Color(0xfff59e0b), // Acento cálido opcional
                   ),
-                  if (_error != null) ...[
-                    const SizedBox(height: 16),
-                    Text(
-                      _error!,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
                   const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
 
-                    child: BotonAccionInferior(
-                      habilitado: true,
-                      texto: "Iniciar Sesión",
-                      onPressed: _iniciarSesion,
-                    ),
+                  BotonDecoradoRunico(
+                    texto: "Iniciar sesion",
+                    onPressed: _iniciarSesion,
                   ),
+
                   const SizedBox(height: 22),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      BotonAccion(
-                        icono: Icon(Icons.person_add),
-                        habilitado: true,
-                        texto: "Crear cuenta",
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement<void, void>(
-                            MaterialPageRoute<void>(
-                              builder: (context) => RegistroScreen(),
-                            ),
-                          );
-                        },
+                      Expanded(
+                        child: BotonRunicoResponsive(
+                          texto: "Crear cuenta",
+                          icono: Icons.person_add,
+                          variante: VarianteBotonRunico.secundario,
+                          colorBrillo: const Color(0xfff59e0b),
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement<void, void>(
+                              MaterialPageRoute<void>(
+                                builder: (context) => RegistroScreen(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      BotonAccion(
-                        icono: Icon(Icons.person_outline),
-                        habilitado: true,
-                        texto: "Inicio sin cuenta",
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement<void, void>(
-                            MaterialPageRoute<void>(
-                              builder: (context) => Homepantalla(),
-                            ),
-                          );
-                        },
+                      Expanded(
+                        child: BotonRunicoResponsive(
+                          texto: "Iniciar sin cuenta",
+                          icono: Icons.person_outline,
+                          variante: VarianteBotonRunico.secundario,
+                          colorBrillo: const Color(0xfff59e0b),
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement<void, void>(
+                              MaterialPageRoute<void>(
+                                builder: (context) => Homepantalla(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
 
 abstract final class TemaApp {
-  static const Color fondo = Color(0xfff7efe5);
-  static const Color superficie = Colors.white;
-  static const Color superficieAtenuada = Color(0xffefe3d4);
-  static const Color tinta = Color(0xff1f2332);
-  static const Color textoSecundario = Color(0xff6e635b);
-  static const Color borde = Color(0xffeadbc8);
+  // Superficies de roca oscura y pizarra
+  static const Color fondo = Color(0xff0f1216);
+  static const Color superficie = Color(0xff1b2027);
+  static const Color superficieAtenuada = Color(0xff252c35);
 
-  static const Color acento = Color.fromARGB(255, 36, 130, 207);
-  static const Color acentoSuave = Color(0xfffde4d8);
+  // Textos claros y metálicos
+  static const Color tinta = Color(0xffe9edf2);
+  static const Color textoSecundario = Color(0xff9aa5b4);
 
-  static const Color acentoTexto = Color(0xffb23a14);
-  static const Color sol = Color(0xfff6c453);
-  static const Color azul = Color(0xff4c7fd9);
+  // Bordes tipo piedra/metal tallado
+  static const Color borde = Color(0xff3a4350);
 
-  static const Color solSuave = Color(0xfffff1cc);
-  static const Color azulSuave = Color(0xffe4ecfa);
+  // Acentos inspirados en el brillo rúnico y las chispas cálidas
+  static const Color acento = Color(0xff4ea8de);
+  static const Color acentoSuave = Color(0xff172d3d);
+  static const Color acentoTexto = Color(0xffff9f43);
 
-  static const Color exito = Color(0xff267a4c);
-  static const Color aviso = Color(0xff9a5b00);
-  static const Color error = Color(0xffc8402c);
+  static const Color sol = Color(0xfff59e0b);
+  static const Color azul = Color(0xff5bc0eb);
 
-  static const Color sombra = Color(0x338a5a3c);
+  static const Color solSuave = Color(0xff332209);
+  static const Color azulSuave = Color(0xff132938);
 
-  static const double radio = 20;
-  static const double radioControl = 16;
+  // Estados
+  static const Color exito = Color(0xff34d399);
+  static const Color aviso = Color(0xfff59e0b);
+  static const Color error = Color(0xffef4444);
+
+  // Sombra profunda
+  static const Color sombra = Color(0x99000000);
+
+  static const double radio = 18;
+  static const double radioControl = 14;
 
   static const String fuente = 'Montserrat';
 
@@ -33,11 +41,16 @@ abstract final class TemaApp {
     final esquema =
         ColorScheme.fromSeed(
           seedColor: acento,
-          brightness: Brightness.light,
+          brightness: Brightness.dark,
         ).copyWith(
           primary: acento,
-          onPrimary: Colors.white,
+          onPrimary: const Color(0xff08131a),
           primaryContainer: acentoSuave,
+          onPrimaryContainer: azul,
+          secondary: sol,
+          onSecondary: const Color(0xff1a1204),
+          secondaryContainer: solSuave,
+          onSecondaryContainer: acentoTexto,
           surface: fondo,
           onSurface: tinta,
           onSurfaceVariant: textoSecundario,
@@ -46,8 +59,13 @@ abstract final class TemaApp {
           outlineVariant: borde,
           error: error,
         );
+
     const pildora = StadiumBorder();
-    const textoBoton = TextStyle(fontSize: 15.5, fontWeight: FontWeight.w700);
+    const textoBoton = TextStyle(
+      fontSize: 15.5,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.4,
+    );
     const tamanoBoton = Size.fromHeight(54);
 
     return ThemeData(
@@ -67,17 +85,18 @@ abstract final class TemaApp {
           color: tinta,
           fontSize: 18,
           fontWeight: FontWeight.w800,
-          letterSpacing: -0.3,
+          letterSpacing: 0.4,
         ),
       ),
       cardTheme: CardThemeData(
         color: superficie,
         surfaceTintColor: Colors.transparent,
-        elevation: 2,
+        elevation: 6,
         shadowColor: sombra,
         margin: const EdgeInsets.symmetric(vertical: 6),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radio),
+          side: const BorderSide(color: borde, width: 1.2),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
@@ -87,14 +106,14 @@ abstract final class TemaApp {
         iconTheme: WidgetStateProperty.resolveWith(
           (estados) => IconThemeData(
             color: estados.contains(WidgetState.selected)
-                ? acento
+                ? azul
                 : textoSecundario,
           ),
         ),
         labelTextStyle: WidgetStateProperty.resolveWith(
           (estados) => TextStyle(
             color: estados.contains(WidgetState.selected)
-                ? acento
+                ? azul
                 : textoSecundario,
             fontSize: 12,
             fontWeight: FontWeight.w700,
@@ -104,7 +123,8 @@ abstract final class TemaApp {
       searchBarTheme: SearchBarThemeData(
         backgroundColor: const WidgetStatePropertyAll(superficie),
         surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
-        elevation: const WidgetStatePropertyAll(0),
+        elevation: const WidgetStatePropertyAll(2),
+        shadowColor: const WidgetStatePropertyAll(sombra),
         side: const WidgetStatePropertyAll(BorderSide(color: borde)),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(
@@ -114,10 +134,10 @@ abstract final class TemaApp {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: tinta,
-          foregroundColor: Colors.white,
-          disabledBackgroundColor: const Color(0xffbdb3aa),
-          disabledForegroundColor: Colors.white,
+          backgroundColor: sol,
+          foregroundColor: const Color(0xff141008),
+          disabledBackgroundColor: superficieAtenuada,
+          disabledForegroundColor: textoSecundario,
           minimumSize: tamanoBoton,
           shape: pildora,
           textStyle: textoBoton,
@@ -127,7 +147,7 @@ abstract final class TemaApp {
         style: OutlinedButton.styleFrom(
           backgroundColor: superficie,
           foregroundColor: tinta,
-          side: const BorderSide(color: borde),
+          side: const BorderSide(color: borde, width: 1.2),
           minimumSize: tamanoBoton,
           shape: pildora,
           textStyle: textoBoton,
@@ -135,7 +155,7 @@ abstract final class TemaApp {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: tinta,
+          foregroundColor: azul,
           textStyle: const TextStyle(
             fontSize: 14.5,
             fontWeight: FontWeight.w700,
@@ -146,7 +166,7 @@ abstract final class TemaApp {
         filled: true,
         fillColor: superficie,
         labelStyle: const TextStyle(color: textoSecundario),
-        floatingLabelStyle: const TextStyle(color: textoSecundario),
+        floatingLabelStyle: const TextStyle(color: azul),
         prefixIconColor: textoSecundario,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -162,7 +182,7 @@ abstract final class TemaApp {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radioControl),
-          borderSide: const BorderSide(color: acento, width: 1.6),
+          borderSide: const BorderSide(color: azul, width: 1.6),
         ),
       ),
       textTheme: const TextTheme(
@@ -170,27 +190,27 @@ abstract final class TemaApp {
           fontSize: 44,
           height: 1.05,
           fontWeight: FontWeight.w900,
-          letterSpacing: -1.2,
-          color: acento,
+          letterSpacing: -0.8,
+          color: azul,
         ),
         headlineLarge: TextStyle(
           fontSize: 30,
           height: 1.15,
           fontWeight: FontWeight.w900,
-          letterSpacing: -0.6,
+          letterSpacing: -0.4,
           color: tinta,
         ),
         headlineMedium: TextStyle(
           fontSize: 25,
           height: 1.18,
           fontWeight: FontWeight.w800,
-          letterSpacing: -0.4,
+          letterSpacing: -0.2,
           color: tinta,
         ),
         titleLarge: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w800,
-          letterSpacing: -0.3,
+          letterSpacing: 0.2,
           color: tinta,
         ),
         titleMedium: TextStyle(
@@ -209,6 +229,7 @@ abstract final class TemaApp {
           fontSize: 11,
           fontWeight: FontWeight.w800,
           letterSpacing: 0.8,
+          color: acentoTexto,
         ),
       ),
     );

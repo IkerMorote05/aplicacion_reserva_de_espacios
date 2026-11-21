@@ -130,7 +130,7 @@ const espaciosDemo = <EspacioDto>[
     condicionesUso: 'No fumar. Recoger el material al finalizar.',
     imagenAsset: 'assets/images/sala_agora.png',
     imagenesAssets: [
-      'assets/images/sala_agora.png',
+      'assets/images/salaAgora.jpeg',
       'assets/images/sala_agora_02.png',
       'assets/images/sala_agora_03.png',
     ],
