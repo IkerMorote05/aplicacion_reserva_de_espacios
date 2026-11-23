@@ -1,3 +1,5 @@
+import 'package:aplicacion_reserva_espacios/data/services/datos_demo.dart';
+import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_service.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../data/repositories/espacios_repository.dart';
@@ -6,64 +8,76 @@ import '../../../domain/models/usuario.dart';
 
 enum CategoriaEspacio { reuniones, talleres, celebraciones }
 
-class HomeViewmodel extends ChangeNotifier {
-  HomeViewmodel({required EspaciosRepository espaciosRepository, this.usuario})
-    : _espacios = List.unmodifiable(espaciosRepository.obtenerTodos());
-
-  final List<Espacio> _espacios;
+class HomeViewModel extends ChangeNotifier {
+  final EspaciosRepository _repository;
   final Usuario? usuario;
+  HomeViewModel({EspaciosRepository? repository, this.usuario})
+    : _repository =
+          repository ??
+          EspaciosRepository(
+            service: DatosSimuladosService(
+              espacios: espaciosDemo,
+              reservas: reservasDemo,
+              usuarios: usuariosDemo,
+              comentarios: comentariosDemo,
+              disponibilidad: disponibilidadDemo,
+            ),
+          ) {
+    cargar();
+  }
+  static const List<String> categorias = [
+    'Reuniones',
+    'Talleres',
+    'Celebraciones',
+  ];
 
-  CategoriaEspacio _categoriaSeleccionada = CategoriaEspacio.reuniones;
-  String _busqueda = '';
+  List<Espacio> _todos = const [];
+  String _consulta = '';
+  String _categoriaSeleccionada = 'Reuniones';
 
-  CategoriaEspacio get categoriaSeleccionada => _categoriaSeleccionada;
-  String get busqueda => _busqueda;
-  String get mensajeBienvenida => usuario == null
-      ? 'Tu próximo espacio, más cerca.'
-      : 'Hola, ${usuario!.nombre}.';
+  String get consulta => _consulta;
+  String get categoriaSeleccionada => _categoriaSeleccionada;
 
-  List<Espacio> get espaciosFiltrados {
-    final actividad = switch (_categoriaSeleccionada) {
-      CategoriaEspacio.reuniones => 'reunion',
-      CategoriaEspacio.talleres => 'taller',
-      CategoriaEspacio.celebraciones => 'celebracion',
-    };
-    final consulta = _busqueda.trim().toLowerCase();
-
-    return List.unmodifiable(
-      _espacios.where((espacio) {
-        final coincideCategoria = espacio.actividades.any(
-          (valor) => valor.toLowerCase() == actividad,
-        );
-        if (!coincideCategoria) {
-          return false;
-        }
-        if (consulta.isEmpty) {
-          return true;
-        }
-        return [
-          espacio.nombre,
-          espacio.descripcion,
-          espacio.ubicacion,
-          ...espacio.actividades,
-        ].any((valor) => valor.toLowerCase().contains(consulta));
-      }),
-    );
+  void cargar() {
+    _todos = _repository.obtenerTodos();
+    notifyListeners();
   }
 
-  void seleccionarCategoria(CategoriaEspacio categoria) {
-    if (_categoriaSeleccionada == categoria) {
-      return;
-    }
+  void actualizarConsulta(String valor) {
+    if (_consulta == valor) return;
+    _consulta = valor;
+    notifyListeners();
+  }
+
+  void seleccionarCategoria(String categoria) {
+    if (_categoriaSeleccionada == categoria) return;
     _categoriaSeleccionada = categoria;
     notifyListeners();
   }
 
-  void actualizarBusqueda(String consulta) {
-    if (_busqueda == consulta) {
-      return;
-    }
-    _busqueda = consulta;
-    notifyListeners();
+  List<Espacio> get espaciosFiltrados {
+    final q = _consulta.trim().toLowerCase();
+    final cat = _categoriaSeleccionada.toLowerCase();
+    final catSingular = cat.endsWith('s')
+        ? cat.substring(0, cat.length - 1)
+        : cat;
+
+    return _todos.where((espacio) {
+      final coincideTexto =
+          q.isEmpty ||
+          espacio.nombre.toLowerCase().contains(q) ||
+          espacio.ubicacion.toLowerCase().contains(q);
+
+      if (!coincideTexto) return false;
+
+      // Si el modelo o descripción/ubicación menciona la categoría, filtramos;
+      // si no hay campo de categorías explícito, mantenemos los espacios disponibles.
+      final textoEspacio = '${espacio.nombre} ${espacio.ubicacion}'
+          .toLowerCase();
+      if (textoEspacio.contains(cat) || textoEspacio.contains(catSingular)) {
+        return true;
+      }
+      return true;
+    }).toList();
   }
 }

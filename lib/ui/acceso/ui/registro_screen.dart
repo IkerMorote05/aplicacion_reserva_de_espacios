@@ -3,6 +3,9 @@ import 'package:aplicacion_reserva_espacios/data/repositories/usuarios_repositor
 import 'package:aplicacion_reserva_espacios/data/services/datos_demo.dart';
 import 'package:aplicacion_reserva_espacios/data/services/datos_simulados_service.dart';
 import 'package:aplicacion_reserva_espacios/ui/acceso/ui/homePantalla.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/boton_decorado_runico.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/campo_input_runico.dart';
+import 'package:aplicacion_reserva_espacios/ui/core/ui/titulo_login_runico.dart';
 import 'package:flutter/material.dart';
 
 import '../view_models/registro_viewmodel.dart';
@@ -76,47 +79,42 @@ class _RegistroScreenState extends State<RegistroScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
-                    Text(
-                      "Crea tu cuenta",
-                      style: TextStyle(
-                        fontSize: 32,
-                        color: TemaApp.tinta,
-                        fontFamily: "Montserrat",
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      "Tu próximo encuentro empieza aqui, Reúnete, crea y celebra",
-                      style: TextStyle(color: TemaApp.textoSecundario),
+                    TituloLoginRunico(
+                      titulo: "Crea tu cuenta",
+                      subtitulo: "Tu próximo encuentro empieza aqui. Reúnete, crea y celebra",
                     ),
                     SizedBox(height: 10),
-                    TextFormField(
-                      controller: _nombreController,
-                      decoration: const InputDecoration(
-                        labelText: "Nombre completo",
-                        hintText: "Esteban Gutierrez",
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: false,
-                        border: OutlineInputBorder(),
-                      ),
-                      textCapitalization: TextCapitalization.words,
-                      validator: _viewModel.validarNombre,
+                    CampoInputRunico(
+                      controlador: _nombreController,
+                      etiqueta: "Nombre completo",
+                      pista: "Esteban Gutierrez",
+                      icono: Icons.person,
+                      validador: _viewModel.validarNombre,
                       onChanged: (_) => _viewModel.limpiarError(),
+                      teclado: TextInputType.name,
                     ),
+                    // TextFormField(
+                    //   controller: _nombreController,
+                    //   decoration: const InputDecoration(
+                    //     labelText: "Nombre completo",
+                    //     hintText: "Esteban Gutierrez",
+                    //     floatingLabelBehavior: FloatingLabelBehavior.always,
+                    //     filled: false,
+                    //     border: OutlineInputBorder(),
+                    //   ),
+                    //   textCapitalization: TextCapitalization.words,
+                    //   validator: _viewModel.validarNombre,
+                    //   onChanged: (_) => _viewModel.limpiarError(),
+                    // ),
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _correoController,
-                      decoration: const InputDecoration(
-                        labelText: "Correo electrónico",
-                        hintText: "esteban@gutierrez.com",
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: false,
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: _viewModel.validarCorreo,
+                    CampoInputRunico(
+                      controlador: _correoController,
+                      etiqueta: "Correo electrónico",
+                      pista: "esteban@gutierrez.com",
+                      icono: Icons.mail,
+                      validador: _viewModel.validarCorreo,
                       onChanged: (_) => _viewModel.limpiarError(),
+                      teclado: TextInputType.emailAddress,
                     ),
                     if (_viewModel.error != null) ...[
                       const SizedBox(height: 16),
@@ -128,54 +126,117 @@ class _RegistroScreenState extends State<RegistroScreen> {
                         textAlign: TextAlign.center,
                       ),
                     ],
+                    // TextFormField(
+                    //   controller: _correoController,
+                    //   decoration: const InputDecoration(
+                    //     labelText: "Correo electrónico",
+                    //     hintText: "esteban@gutierrez.com",
+                    //     floatingLabelBehavior: FloatingLabelBehavior.always,
+                    //     filled: false,
+                    //     border: OutlineInputBorder(),
+                    //   ),
+                    //   keyboardType: TextInputType.emailAddress,
+                    //   validator: _viewModel.validarCorreo,
+                    //   onChanged: (_) => _viewModel.limpiarError(),
+                    // ),
+                    // if (_viewModel.error != null) ...[
+                    //   const SizedBox(height: 16),
+                    //   Text(
+                    //     _viewModel.error!,
+                    //     style: TextStyle(
+                    //       color: Theme.of(context).colorScheme.error,
+                    //     ),
+                    //     textAlign: TextAlign.center,
+                    //   ),
+                    // ],
                     SizedBox(height: 10),
-                    TextFormField(
-                      controller: _contrasenaController,
-                      obscureText: _viewModel.ocultarContrasena,
-                      decoration: InputDecoration(
-                        labelText: "Contraseña",
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _viewModel.ocultarContrasena
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          tooltip: 'Mostrar u ocultar contraseña',
-                          onPressed: _viewModel.alternarVisibilidadContrasena,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: false,
-                        border: const OutlineInputBorder(),
-                      ),
-                      validator: _viewModel.validarContrasena,
+                    CampoInputRunico(
+                      controlador: _contrasenaController,
+                      etiqueta: "Contraseña",
+                      pista: "",
+                      icono: Icons.password,
+                      validador: _viewModel.validarContrasena,
                       onChanged: (_) => _viewModel.limpiarError(),
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      controller: _confirmarContrasenaController,
                       obscureText: _viewModel.ocultarContrasena,
-                      decoration: InputDecoration(
-                        labelText: "Confirmar contraseña",
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _viewModel.ocultarContrasena
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          tooltip: 'Mostrar u ocultar contraseña',
-                          onPressed: _viewModel.alternarVisibilidadContrasena,
+                      sufijo: IconButton(
+                        icon: Icon(
+                          _viewModel.ocultarContrasena
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                         ),
-                        helperText: "Usa al menos 8 caracteres.",
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        filled: false,
-                        border: const OutlineInputBorder(),
+                        tooltip: 'Mostrar u ocultar contraseña',
+                        onPressed: _viewModel.alternarVisibilidadContrasena,
                       ),
-                      validator: (valor) => _viewModel.validarConfirmacion(
+                    ),
+                    // TextFormField(
+                    //   controller: _contrasenaController,
+                    //   obscureText: _viewModel.ocultarContrasena,
+                    //   decoration: InputDecoration(
+                    //     labelText: "Contraseña",
+                    //     suffixIcon: IconButton(
+                    //       icon: Icon(
+                    //         _viewModel.ocultarContrasena
+                    //             ? Icons.visibility_off
+                    //             : Icons.visibility,
+                    //       ),
+                    //       tooltip: 'Mostrar u ocultar contraseña',
+                    //       onPressed: _viewModel.alternarVisibilidadContrasena,
+                    //     ),
+                    //     floatingLabelBehavior: FloatingLabelBehavior.always,
+                    //     filled: false,
+                    //     border: const OutlineInputBorder(),
+                    //   ),
+                    //   validator: _viewModel.validarContrasena,
+                    //   onChanged: (_) => _viewModel.limpiarError(),
+                    // ),
+                    SizedBox(height: 10),
+                    CampoInputRunico(
+                      controlador: _confirmarContrasenaController,
+                      etiqueta: "Confirmar contraseña",
+                      pista: "",
+                      icono: Icons.password,
+                      validador: (valor) => _viewModel.validarConfirmacion(
                         valor,
                         _contrasenaController.text,
                       ),
+
                       onChanged: (_) => _viewModel.limpiarError(),
+                      obscureText: _viewModel.ocultarContrasena,
+                      sufijo: IconButton(
+                        icon: Icon(
+                          _viewModel.ocultarContrasena
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        tooltip: 'Mostrar u ocultar contraseña',
+                        onPressed: _viewModel.alternarVisibilidadContrasena,
+                      ),
                     ),
+                    // TextFormField(
+                    //   controller: _confirmarContrasenaController,
+                    //   obscureText: _viewModel.ocultarContrasena,
+                    //   decoration: InputDecoration(
+                    //     labelText: "Confirmar contraseña",
+                    //     suffixIcon: IconButton(
+                    //       icon: Icon(
+                    //         _viewModel.ocultarContrasena
+                    //             ? Icons.visibility_off
+                    //             : Icons.visibility,
+                    //       ),
+                    //       tooltip: 'Mostrar u ocultar contraseña',
+                    //       onPressed: _viewModel.alternarVisibilidadContrasena,
+                    //     ),
+                    //     helperText: "Usa al menos 8 caracteres.",
+                    //     floatingLabelBehavior: FloatingLabelBehavior.always,
+                    //     filled: false,
+                    //     border: const OutlineInputBorder(),
+                    //   ),
+                    //   validator: (valor) => _viewModel.validarConfirmacion(
+                    //     valor,
+                    //     _contrasenaController.text,
+                    //   ),
+                    //   onChanged: (_) => _viewModel.limpiarError(),
+                    // ),
                     SizedBox(height: 20),
                     CheckboxListTile(
                       title: Text(
@@ -189,18 +250,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           .leading, // checkbox a la izquierda
                     ),
                     const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 60,
-                      child: FilledButton(
-                        onPressed: _registrar,
-                        style: const ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(
-                            TemaApp.tinta,
-                          ),
-                        ),
-                        child: Text("Crear cuenta · Demo"),
-                      ),
+                    BotonDecoradoRunico(
+                      texto: "Crear cuenta · Demo",
+                      onPressed: _registrar,
                     ),
                   ],
                 ),

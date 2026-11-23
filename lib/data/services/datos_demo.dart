@@ -128,7 +128,7 @@ const espaciosDemo = <EspacioDto>[
     ubicacion: 'Centro · Calle del Encuentro, 12',
     horario: '09:00–20:00',
     condicionesUso: 'No fumar. Recoger el material al finalizar.',
-    imagenAsset: 'assets/images/sala_agora.png',
+    imagenAsset: 'assets/images/salaAgora.jpeg',
     imagenesAssets: [
       'assets/images/salaAgora.jpeg',
       'assets/images/sala_agora_02.png',

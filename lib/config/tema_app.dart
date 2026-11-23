@@ -31,11 +31,26 @@ abstract final class TemaApp {
 
   // Sombra profunda
   static const Color sombra = Color(0x99000000);
+  static const String fuente = 'Cinzel'; // o tu fuente configurada
+  static const Color fondoOscuro = Color(0xff0f1216);
+  static const Color fondoSuperior = Color(0xff161b22);
 
+  static const Color ambar = Color(0xfff59e0b);
+
+  static const TextStyle tituloSeccionRunico = TextStyle(
+    fontFamily: fuente,
+    fontSize: 26,
+    fontWeight: FontWeight.w900,
+    letterSpacing: 1.4,
+    height: 1.15,
+    color: tinta,
+    shadows: [
+      Shadow(color: Color(0xff06080a), offset: Offset(0, 3), blurRadius: 4),
+      Shadow(color: Color(0x885bc0eb), offset: Offset(0, 0), blurRadius: 14),
+    ],
+  );
   static const double radio = 18;
   static const double radioControl = 14;
-
-  static const String fuente = 'Montserrat';
 
   static ThemeData crear() {
     final esquema =
